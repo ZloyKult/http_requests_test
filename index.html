@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Тестирование API</title>
+  </head>
+  <body>
+    <h1>Тестирование API</h1>
+    <form id="my-form">
+      <label for="endpoint">Endpoint URL:</label>
+      <input type="text" id="endpoint" name="endpoint">
+      <br>
+      <label for="method">HTTP метод:</label>
+      <select id="method" name="method">
+        <option value="GET">GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option>
+      </select>
+      <br>
+      <label for="data">Данные:</label>
+      <textarea id="data" name="data"></textarea>
+      <br>
+      <button type="submit">Отправить запрос</button>
+    </form>
+    <div id="result"></div>
+    <script>
+      const form = document.querySelector('#my-form');
+      const resultDiv = document.querySelector('#result');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const endpoint = event.target.elements.endpoint.value;
+        const method = event.target.elements.method.value;
+        const data = event.target.elements.data.value;
+
+        try {
+          const response = await fetch(endpoint, {
+            method: method,
+            body: data,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          const result = await response.json();
+          resultDiv.innerText = JSON.stringify(result);
+        } catch (error) {
+          console.error(error);
+          resultDiv.innerText = error.message;
+        }
+      });
+    </script>
+  </body>
+</html>
